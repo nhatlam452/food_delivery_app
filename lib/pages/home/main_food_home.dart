@@ -29,7 +29,7 @@ class _MainFoodHomeState extends State<MainFoodHome> {
                 children: [
                   Column(
                     children: [
-                      BigText(text: "Viet Nam", color: AppColors.mainColor),
+                      BigText(text: "Viet Nam", color: AppColors.mainColor,weight: FontWeight.w500,),
                       Row(
                         children: [
                           SmallText(

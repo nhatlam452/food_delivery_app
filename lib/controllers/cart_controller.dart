@@ -9,12 +9,12 @@ import '../util/colors.dart';
 class CartController extends GetxController {
   final CartRepo cartRepo;
 
-  CartController({required this.cartRepo, required});
+  CartController({required this.cartRepo});
 
   Map<int, CartModel> _items = {};
 
   Map<int, CartModel> get item => _items;
-
+  List<CartModel> storageItems = []; //for storage and sharePreferences
   void addItem(ProductModel productModel, int quantity) {
     var totalQuantity = 0;
     if (_items.containsKey(productModel.id!)) {
@@ -27,7 +27,8 @@ class CartController extends GetxController {
             img: value.img,
             quantity: value.quantity! + quantity,
             isExit: true,
-            time: DateTime.now().toString());
+            time: DateTime.now().toString(),
+            product: productModel);
       });
       if (totalQuantity <= 0) {
         _items.remove(productModel.id);
@@ -42,7 +43,8 @@ class CartController extends GetxController {
               img: productModel.img,
               quantity: quantity,
               isExit: true,
-              time: DateTime.now().toString());
+              time: DateTime.now().toString(),
+              product: productModel);
         });
       } else {
         Get.snackbar(
@@ -50,6 +52,8 @@ class CartController extends GetxController {
             backgroundColor: AppColors.mainColor, colorText: Colors.white);
       }
     }
+    cartRepo.addToCartList(getItems);
+    update();
   }
 
   bool exitsInCart(ProductModel product) {
@@ -86,4 +90,44 @@ class CartController extends GetxController {
     }).toList();
   }
 
+  int get totalAmount {
+    var total = 0;
+    _items.forEach((key, value) {
+      total += value.quantity! * value.price!;
+    });
+    return total;
+  }
+
+  List<CartModel> getCartData() {
+    setCart = cartRepo.getCartList();
+    return storageItems;
+  }
+
+  set setCart(List<CartModel> items) {
+    storageItems = items;
+    for (int i = 0; i < storageItems.length; i++) {
+      _items.putIfAbsent(storageItems[i].product!.id!, () => storageItems[i]);
+    }
+  }
+
+  void addToHistory() {
+    cartRepo.addToCartHistory();
+    clear();
+  }
+
+  void clear() {
+    _items = {};
+    update();
+  }
+  List<CartModel> getCartHistoryList(){
+    return cartRepo.getHistoryList();
+  }
+  set setItems(Map<int,CartModel> setItems){
+    _items = {};
+    _items = setItems;
+  }
+  void addToCartList(){
+    cartRepo.addToCartList(getItems);
+    update();
+  }
 }
