@@ -11,5 +11,6 @@ class PopularProductResponse extends GetxService{
   Future<Response> getPopularProductList() async
   {
     return await apiClient.getData(AppConstants.POPULAR_PRODUCT_URI);
+
   }  
 }

@@ -66,6 +66,10 @@ flutter:
     - assets/image/pngwing.png
     - assets/image/ic_logo_green.png
     - assets/image/pizza.jpg
+    - assets/image/empty.png
+    - assets/image/download.png
+    - assets/image/logo_fb.png
+    - assets/image/logo_gg.png
   fonts:
     - family: Roboto
       fonts:

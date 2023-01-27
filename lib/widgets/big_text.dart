@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/util/dimensions.dart';
 
+import '../util/colors.dart';
+
 class BigText extends StatelessWidget {
   final Color? color;
   final String text;
@@ -11,7 +13,7 @@ class BigText extends StatelessWidget {
 
   BigText(
       {Key? key,
-      this.color = const Color(0xFF89dad0),
+      this.color = AppColors.mainColor,
       required this.text,
       this.size = 0,
         this.weight = FontWeight.w400,

@@ -4,7 +4,10 @@ import 'package:food_delivery_app/pages/cart/cart_history.dart';
 import 'package:food_delivery_app/pages/home/main_food_home.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../auth/sign_in_page.dart';
+import '../../auth/sign_up_page.dart';
 import '../../util/colors.dart';
+import '../user/user_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,15 +28,9 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _buildScreens() {
     return [
       MainFoodHome(),
-      Container(
-          child: Center(
-        child: Text("Next next page"),
-      )),
+      SignInPage(),
       CartHistory(),
-      Container(
-          child: Center(
-        child: Text("Next next page"),
-      )),
+      AccountPage(),
     ];
   }
 

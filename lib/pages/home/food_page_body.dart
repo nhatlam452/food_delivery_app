@@ -172,7 +172,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                         color: Colors.black,
                                       ),
                                       SmallText(
-                                        maxLine: 3,
+                                        maxLine: 2,
                                           text: recommendedProduct
                                               .recommendedProductList[index]
                                               .description!),
