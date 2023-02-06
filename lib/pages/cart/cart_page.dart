@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/auth/sign_in_page.dart';
+import 'package:food_delivery_app/auth/sign_up_page.dart';
 import 'package:food_delivery_app/base/no_data_page.dart';
 import 'package:food_delivery_app/controllers/cart_controller.dart';
 import 'package:food_delivery_app/controllers/popular_product_controller.dart';
 import 'package:food_delivery_app/controllers/recommend_product_controller.dart';
-import 'package:food_delivery_app/pages/home/main_food_home.dart';
 import 'package:food_delivery_app/routes/route_helper.dart';
 import 'package:food_delivery_app/util/app_constants.dart';
 import 'package:food_delivery_app/util/colors.dart';
@@ -12,6 +13,7 @@ import 'package:food_delivery_app/widgets/big_text.dart';
 import 'package:food_delivery_app/widgets/small_text.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/auth_controller.dart';
 import '../../widgets/app_icon.dart';
 
 class CartPage extends StatelessWidget {
@@ -272,8 +274,11 @@ class CartPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    print("On tap");
-                    cart.addToHistory();
+                    if(Get.find<AuthController>().userLoggedIn()){
+                      cart.addToHistory();
+                    }else{
+                      Get.to(SignUpPage());
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.only(

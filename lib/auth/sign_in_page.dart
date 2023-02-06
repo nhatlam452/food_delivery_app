@@ -144,23 +144,28 @@ class SignInPage extends StatelessWidget {
               SizedBox(
                 height: Dimension.screenHeight * 0.05,
               ),
-              RichText(
-                text: TextSpan(
-                    text: "Don't have an account ? ",
-                    style: TextStyle(
-                        color: AppColors.textColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: Dimension.font20),
-                    children: [
-                      TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.to(() => SignUpPage(),
-                                transition: Transition.fade),
-                          text: " Sign up",
-                          style: TextStyle(
-                              color: AppColors.mainBlackColor,
-                              fontSize: Dimension.font20))
-                    ]),
+              GestureDetector(
+                onTap: (){
+                  Get.to(SignUpPage());
+                },
+                child: RichText(
+                  text: TextSpan(
+                      text: "Don't have an account ? ",
+                      style: TextStyle(
+                          color: AppColors.textColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: Dimension.font20),
+                      children: [
+                        TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => Get.to(() => SignUpPage(),
+                                  transition: Transition.fade),
+                            text: " Sign up",
+                            style: TextStyle(
+                                color: AppColors.mainBlackColor,
+                                fontSize: Dimension.font20))
+                      ]),
+                ),
               ),
             ],
           ),

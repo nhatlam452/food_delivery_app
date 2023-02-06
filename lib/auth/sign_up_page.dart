@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 import '../base/custom_loader.dart';
 import '../controllers/auth_controller.dart';
+import '../routes/route_helper.dart';
 import '../widgets/app_text_field.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -54,6 +55,7 @@ class SignUpPage extends StatelessWidget {
         authController.registration(signUpBody).then((status){
           if(status.isSuccess){
             print("success");
+            Get.offNamed(RouteHelper.getInitial());
           }else{
             showCustomToast(status.msg);
           }
@@ -64,7 +66,8 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GetBuilder<AuthController>(builder: (_authController){
-        return _authController.isLoading?SingleChildScrollView(
+        return !_authController.isLoading?SingleChildScrollView(
+
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [

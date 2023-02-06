@@ -1,7 +1,7 @@
 import 'package:food_delivery_app/data/api/api_client.dart';
 import 'package:food_delivery_app/model/sign_up_body_model.dart';
 import 'package:food_delivery_app/util/app_constants.dart';
-import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
@@ -45,4 +45,14 @@ class AuthRepo {
       throw e;
     }
   }
+
+  bool clearShareData(){
+    sharedPreferences.remove(AppConstants.TOKEN);
+    sharedPreferences.remove(AppConstants.PASSWORD);
+    sharedPreferences.remove(AppConstants.PHONE);
+    apiClient.token='';
+    apiClient.updateHeader('');
+    return true;
+  }
+
 }

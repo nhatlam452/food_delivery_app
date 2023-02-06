@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "581881201277",
+    "project_id": "gz-food",
+    "storage_bucket": "gz-food.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581881201277:android:9cb66e7a057bcdbd62a714",
+        "android_client_info": {
+          "package_name": "com.example.food_delivery_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "581881201277-01t757ktop7q6hh79j8ahn90t454pol4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.food_delivery_app",
+            "certificate_hash": "353a86c5a6d90ee72dea084e43143575485b802c"
+          }
+        },
+        {
+          "client_id": "581881201277-u3ifk7abqhp3nim3ie6f45q99k6tccpd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_6tbeFmSiXAfibXBMNQ3qpgqGI7SLV-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "581881201277-u3ifk7abqhp3nim3ie6f45q99k6tccpd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
