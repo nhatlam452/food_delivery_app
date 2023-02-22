@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:food_delivery_app/controllers/auth_controller.dart';
 import 'package:food_delivery_app/controllers/cart_controller.dart';
 import 'package:food_delivery_app/controllers/location_controller.dart';
+import 'package:food_delivery_app/controllers/order_controller.dart';
 import 'package:food_delivery_app/controllers/popular_product_controller.dart';
 import 'package:food_delivery_app/controllers/recommend_product_controller.dart';
 import 'package:food_delivery_app/controllers/user_controller.dart';
 import 'package:food_delivery_app/data/api/api_client.dart';
+import 'package:food_delivery_app/data/response/OrderRepo.dart';
 import 'package:food_delivery_app/data/response/auth_repo.dart';
 import 'package:food_delivery_app/data/response/cart_repo.dart';
 import 'package:food_delivery_app/data/response/location_repo.dart';
@@ -32,6 +34,7 @@ Future<void> init() async {
   Get.lazyPut(() => RecommendedProductResponse(apiClient: Get.find()));
   Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()));
   Get.lazyPut(() => LocationRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
+  Get.lazyPut(() => OrderRepo(apiClient: Get.find()));
   //controller
   Get.lazyPut(
       () => PopularProductController(popularProductResponse: Get.find()));
@@ -41,4 +44,5 @@ Future<void> init() async {
   Get.lazyPut(() => AuthController(authRepo: Get.find()));
   Get.lazyPut(() => UserController(userRepo: Get.find()));
   Get.lazyPut(() => LocationController(locationRepo :Get.find()));
+  Get.lazyPut(() => OrderController(orderRepo: Get.find()));
 }

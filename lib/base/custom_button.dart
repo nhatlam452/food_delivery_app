@@ -18,8 +18,8 @@ class CustomButton extends StatelessWidget {
       required this.buttonText,
       this.transparent = false,
       this.margin,
-      this.height,
-      this.width,
+      this.height=70,
+      this.width=250,
       this.fontSize,
       this.radius = 5,
       this.icon})

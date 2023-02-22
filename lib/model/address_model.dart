@@ -33,7 +33,6 @@ class AddressModel {
 
   AddressModel.fromJson(Map<String,dynamic> json){
     _id=json['id'];
-    _addressType=json['address_type']??"";
     _contactPersonNumber=json['contact_person_number']??"";
     _contactPersonName=json['contact_person_name']??"";
     _address = json["address"];
@@ -46,11 +45,11 @@ class AddressModel {
 
     data['id'] = this._id;
     data['address_type'] = this._addressType;
-    data['contactPersonName'] = this._contactPersonName;
-    data['contactPersonNumber'] = this._contactPersonNumber;
+    data['contact_person_name'] = this._contactPersonName;
+    data['contact_person_number'] = this._contactPersonNumber;
     data['address'] = this._address;
     data['latitude'] = this._latitude;
-    data['_ongitude'] = this._longitude;
+    data['longitude'] = this._longitude;
     return data;
   }
 }

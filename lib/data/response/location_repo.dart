@@ -1,4 +1,5 @@
 import 'package:food_delivery_app/util/app_constants.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter_platform_interface/src/types/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,10 +20,11 @@ class LocationRepo {
     return sharedPreferences.getString(AppConstants.USER_ADDRESS)??"";
   }
   Future<Response> addAddress(AddressModel addressModel) async {
-    return await apiClient.post(AppConstants.ADD_USER_ADDRESS, addressModel.toJson());
+    print("address" + addressModel.toJson().toString());
+    return await apiClient.postData(AppConstants.ADD_USER_ADDRESS, addressModel.toJson());
   }
   Future<Response> getAllAddress() async{
-    return  await apiClient.get(AppConstants.ADDRESS_LIST_URI);
+    return  await apiClient.getData(AppConstants.ADDRESS_LIST_URI);
   }
 
   Future<bool> saveUserAddress(String userAddress) async {
@@ -32,6 +34,16 @@ class LocationRepo {
 
   Future<Response> getZone(String lat , String lng ) async{
     return await apiClient.getData('${AppConstants.ZONE_URI}?lat=$lat&lng=$lng');
+  }
+  Future<LatLng> getCurrentLocation() async {
+    try {
+      Position position;
+      position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      return LatLng(position.latitude, position.longitude);
+    } catch (e) {
+      print(e);
+      return LatLng(10.0, 10.0);
+    }
   }
 
 }

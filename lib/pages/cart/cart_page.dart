@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/auth/sign_in_page.dart';
 import 'package:food_delivery_app/auth/sign_up_page.dart';
 import 'package:food_delivery_app/base/no_data_page.dart';
+import 'package:food_delivery_app/base/show_toast.dart';
 import 'package:food_delivery_app/controllers/cart_controller.dart';
+import 'package:food_delivery_app/controllers/location_controller.dart';
+import 'package:food_delivery_app/controllers/order_controller.dart';
 import 'package:food_delivery_app/controllers/popular_product_controller.dart';
 import 'package:food_delivery_app/controllers/recommend_product_controller.dart';
+import 'package:food_delivery_app/controllers/user_controller.dart';
 import 'package:food_delivery_app/routes/route_helper.dart';
 import 'package:food_delivery_app/util/app_constants.dart';
 import 'package:food_delivery_app/util/colors.dart';
@@ -265,6 +269,7 @@ class CartPage extends StatelessWidget {
                       BigText(
                         text: "\$ " + cart.totalAmount.toString(),
                         color: Colors.black,
+                       size :  Dimension.iconSize16,
                       ),
                       SizedBox(
                         width: Dimension.width10 / 2,
@@ -275,7 +280,7 @@ class CartPage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     if(Get.find<AuthController>().userLoggedIn()){
-                      cart.addToHistory();
+                       Get.toNamed(RouteHelper.getPaymentPage());
                     }else{
                       Get.to(SignUpPage());
                     }
@@ -289,6 +294,7 @@ class CartPage extends StatelessWidget {
                     child: BigText(
                       text: "Check out",
                       color: Colors.white,
+                      size: Dimension.iconSize16,
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(Dimension.radius20),

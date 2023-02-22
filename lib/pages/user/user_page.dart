@@ -105,53 +105,6 @@ class AccountPage extends StatelessWidget {
                               SizedBox(
                                 height: Dimension.height20,
                               ),
-                              //address
-                              GetBuilder<LocationController>(
-                                  builder: (locationController) {
-                                  if(_userLoggedIn && locationController.addressTypeList.isEmpty){
-                                    return GestureDetector(
-                                      onTap: (){
-                                        Get.offNamed(RouteHelper.getAddAddress());
-                                      },
-                                      child: AccountWidget(
-                                        icon: AppIcon(
-                                          icon: CupertinoIcons.location_fill,
-                                          backgroundColor: AppColors.mainColor,
-                                          iconColor: Colors.white,
-                                          size: Dimension.height10 * 5,
-                                          iconSize: Dimension.height10 * 5 / 2,
-                                        ),
-                                        text: BigText(
-                                          text: "Save your address",
-                                          color: AppColors.textColor,
-                                        ),
-                                      ),
-                                    );
-                                  }else{
-                                    return GestureDetector(
-                                      onTap: (){
-                                        Get.offNamed(RouteHelper.getAddAddress());
-                                      },
-                                      child: AccountWidget(
-                                        icon: AppIcon(
-                                          icon: CupertinoIcons.location_fill,
-                                          backgroundColor: AppColors.mainColor,
-                                          iconColor: Colors.white,
-                                          size: Dimension.height10 * 5,
-                                          iconSize: Dimension.height10 * 5 / 2,
-                                        ),
-                                        text: BigText(
-                                          text: "Your address",
-                                          color: AppColors.textColor,
-                                        ),
-                                      ),
-                                    );
-                                  }
-
-                              }),
-                              SizedBox(
-                                height: Dimension.height20,
-                              ),
                               //message
                               AccountWidget(
                                 icon: AppIcon(

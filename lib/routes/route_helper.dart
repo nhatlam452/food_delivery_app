@@ -1,3 +1,4 @@
+import 'package:food_delivery_app/model/order_model.dart';
 import 'package:food_delivery_app/pages/address/add_address_page.dart';
 import 'package:food_delivery_app/pages/address/pick_address_map.dart';
 import 'package:food_delivery_app/pages/cart/cart_page.dart';
@@ -5,6 +6,7 @@ import 'package:food_delivery_app/pages/home/home_page.dart';
 import 'package:food_delivery_app/pages/food/popular_food_detail.dart';
 import 'package:food_delivery_app/pages/food/recommend_food_detail.dart';
 import 'package:food_delivery_app/pages/home/main_food_home.dart';
+import 'package:food_delivery_app/pages/payment/payment_page.dart';
 import 'package:food_delivery_app/splash/splash_page.dart';
 import 'package:get/get.dart';
 
@@ -19,6 +21,8 @@ class RouteHelper {
   static const String signInPage = "/sign-in-page";
   static const String addAddress = "/add-address-page";
   static const String pickAddress = "/pick-address-page";
+  static const String paymentPage = "/payment-page";
+  static const String orderSuccess = "/order-success";
 
   static String getPopularFood(int pageId, String page) =>
       '$popularFood?pageId=$pageId&page=$page';
@@ -27,6 +31,8 @@ class RouteHelper {
       '$recommendedFood?pageId=$pageId&page=$page';
 
   static String getCartPage() => '$cartPage';
+
+  static String getPaymentPage() => '$paymentPage';
 
   static String getSignInPage() => '$signInPage';
 
@@ -37,6 +43,7 @@ class RouteHelper {
   static String getAddAddress() => '$addAddress';
 
   static String getPickAddress() => '$pickAddress';
+  static String getOrderSuccess(String orderID , String status) => '$orderSuccess?id=$orderID&status=$status';
 
   static List<GetPage> routes = [
     GetPage(
@@ -73,6 +80,15 @@ class RouteHelper {
         },
         transition: Transition.fadeIn),
     GetPage(
+        name: paymentPage,
+        page: () {
+          return PaymentPage(
+
+
+          );
+        },
+        transition: Transition.fadeIn),
+    GetPage(
         name: addAddress,
         page: () {
           return AddAddressPage();
@@ -85,5 +101,8 @@ class RouteHelper {
           return _pickAddress;
         },
         transition: Transition.fadeIn),
+    // GetPage(name: orderSuccess, page: ()=>OrderSuccessPage(
+    //   orderID : Get.parameters['id'], status : Get.parameters['status'].toString().contains("success")?1:0,
+    // ))
   ];
 }

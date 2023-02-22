@@ -65,6 +65,14 @@ class _PickAddressMapState extends State<PickAddressMap> {
                     zoomControlsEnabled: false,
                     onCameraMove: (CameraPosition cameraPosition) {
                       _cameraPosition = cameraPosition;
+                      print("in zone : " +
+                          locationController.inZone.toString() +
+                          " - from address" +
+                          widget.fromAddress.toString());
+                      print("latitude : " +
+                          locationController.pickPosition.latitude.toString() +
+                          " - from address" +
+                          locationController.pickPosition.longitude.toString());
                     },
                     onCameraIdle: () {
                       Get.find<LocationController>()
@@ -114,12 +122,11 @@ class _PickAddressMapState extends State<PickAddressMap> {
                       child: locationController.isLoading
                           ? Center(child: CircularProgressIndicator())
                           : CustomButton(
-                              buttonText: locationController.inZone
-                                  ? widget.fromAddress
-                                      ? 'Pick Address'
-                                      : 'Pick Location'
-                                  : 'Service is not available',
-                              onPressed:(locationController.buttonDisable || locationController.loading)
+                              buttonText: widget.fromAddress
+                                  ? 'Pick Address'
+                                  : 'Pick Location',
+                              onPressed: (locationController.buttonDisable ||
+                                      locationController.loading)
                                   ? null
                                   : () {
                                       if (locationController
@@ -144,8 +151,8 @@ class _PickAddressMapState extends State<PickAddressMap> {
                                             locationController.setAddressData();
                                           }
                                           //Get back create update problem
-                                          Get.toNamed(
-                                              RouteHelper.getAddAddress());
+
+                                          Get.back(result:  '${locationController.pickPlacemark.name ?? ""}');
                                         }
                                       }
                                     },

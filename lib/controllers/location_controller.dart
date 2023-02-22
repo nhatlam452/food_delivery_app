@@ -14,6 +14,10 @@ class LocationController extends GetxController implements GetxService {
 
   LocationController({required this.locationRepo});
 
+  late LatLng _currentLatlng;
+
+  LatLng get currentLatLng => _currentLatlng;
+
   bool _loading = false;
   late Position _position;
   late Position _pickPosition;
@@ -121,6 +125,8 @@ class LocationController extends GetxController implements GetxService {
     }
   }
 
+
+
   AddressModel getUserAddress() {
     late AddressModel _addressModel;
     _getAddress = jsonDecode(locationRepo.getUserAddress());
@@ -184,7 +190,13 @@ class LocationController extends GetxController implements GetxService {
       _addressList = [];
       _allAddressList = [];
     }
+    print("list size : " + _addressList.length.toString());
     update();
+  }
+
+  getCurrentLocation() async {
+    LatLng latLng = await locationRepo.getCurrentLocation();
+    _currentLatlng = latLng;
   }
 
   Future<bool> saveUserAddress(AddressModel addressModel) async {
@@ -215,7 +227,6 @@ class LocationController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       _inZone = true;
       _responseModel = ResponseModel(true, response.body["zone_id"].toString());
-
     } else {
       _inZone = false;
       _responseModel = ResponseModel(true, response.statusText!);

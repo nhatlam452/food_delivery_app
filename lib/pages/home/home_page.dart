@@ -4,6 +4,8 @@ import 'package:food_delivery_app/pages/address/add_address_page.dart';
 import 'package:food_delivery_app/pages/address/pick_address_map.dart';
 import 'package:food_delivery_app/pages/cart/cart_history.dart';
 import 'package:food_delivery_app/pages/home/main_food_home.dart';
+import 'package:food_delivery_app/pages/order/order_page.dart';
+import 'package:food_delivery_app/pages/payment/payment_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../auth/sign_in_page.dart';
@@ -30,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _buildScreens() {
     return [
       MainFoodHome(),
-      PickAddressMap(fromSignup: false, fromAddress: true),
+      OrderPage(),
       CartHistory(),
       AccountPage(),
     ];

@@ -24,7 +24,7 @@ class AddAddressPage extends StatefulWidget {
 }
 
 class _AddAddressPageState extends State<AddAddressPage> {
-  TextEditingController _addressController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _contactPersonName = TextEditingController();
   final TextEditingController _contactPersonNumber = TextEditingController();
   late bool _isLogged;
@@ -40,6 +40,9 @@ class _AddAddressPageState extends State<AddAddressPage> {
     if (_isLogged && Get.find<UserController>().userModel == null) {
       Get.find<UserController>().getUserInfo();
     }
+    Get.find<LocationController>().getAddressList();
+    print("is Empty : " +
+        Get.find<LocationController>().addressList.isEmpty.toString());
     if (Get.find<LocationController>().addressList.isNotEmpty) {
       if (Get.find<LocationController>().getUserAddressFronLocalStorage() ==
           "") {
@@ -63,163 +66,166 @@ class _AddAddressPageState extends State<AddAddressPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Address page"),
+        title: Text("Save Address"),
         backgroundColor: AppColors.mainColor,
       ),
-      body: GetBuilder<UserController>(builder: (userController) {
-        if (userController.userModel != null &&
-            _contactPersonName.text.isEmpty) {
-          _contactPersonName.text = '${userController.userModel?.name}';
-          _contactPersonNumber.text = '${userController.userModel.phone}';
-          if (Get.find<LocationController>().addressList.isNotEmpty) {
-            _addressController.text =
-                Get.find<LocationController>().getUserAddress().address;
+      body: Center(
+        child: GetBuilder<UserController>(builder: (userController) {
+          if (userController.userModel != null &&
+              _contactPersonName.text.isEmpty) {
+            _contactPersonName.text = '${userController.userModel?.name}';
+            _contactPersonNumber.text = '${userController.userModel.phone}';
+            if (Get.find<LocationController>().addressList.isNotEmpty) {
+              _addressController.text =
+                  Get.find<LocationController>().getUserAddress().address;
+            }
           }
-        }
-        return GetBuilder<LocationController>(
-          builder: (locationController) {
-            _addressController.text =
-                '${locationController.placemark.name ?? ''}'
-                '${locationController.placemark.locality ?? ''}'
-                '${locationController.placemark.postalCode ?? ''}'
-                '${locationController.placemark.country ?? ''}';
-            print("address 1  is : " + _addressController.text);
+          return GetBuilder<LocationController>(
+            builder: (locationController) {
+              _addressController.text =
+                  '${locationController.placemark.name ?? ''}'
+                  '${locationController.placemark.locality ?? ''}'
+                  '${locationController.placemark.postalCode ?? ''}'
+                  '${locationController.placemark.country ?? ''}';
 
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 148,
-                    margin: EdgeInsets.all(5),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(Dimension.radius30 / 2),
-                      border: Border.all(
-                        width: 2,
-                        color: Theme.of(context).primaryColor,
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 148,
+                      margin: EdgeInsets.all(5),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(Dimension.radius30 / 2),
+                        border: Border.all(
+                          width: 2,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          GoogleMap(
+                            onTap: (latlng) {
+                              Get.toNamed(RouteHelper.getPickAddress(),
+                                  arguments: PickAddressMap(
+                                    fromSignup: false,
+                                    fromAddress: true,
+                                    googleMapController:
+                                        locationController.mapController,
+                                  ));
+                            },
+                            initialCameraPosition: CameraPosition(
+                                target: _initialPosition, zoom: 17),
+                            zoomControlsEnabled: false,
+                            compassEnabled: true,
+                            indoorViewEnabled: true,
+                            myLocationEnabled: true,
+                            mapToolbarEnabled: false,
+                            onCameraIdle: () {
+                              locationController.updatePosition(
+                                  _cameraPosition, true);
+                            },
+                            onCameraMove: ((position) =>
+                                _cameraPosition = position),
+                            onMapCreated: (GoogleMapController controller) {
+                              locationController.setMapController(controller);
+                            },
+                          )
+                        ],
                       ),
                     ),
-                    child: Stack(
-                      children: [
-                        GoogleMap(
-                          onTap: (latlng) {
-                            Get.toNamed(RouteHelper.getPickAddress(),
-                                arguments: PickAddressMap(
-                                  fromSignup: false,
-                                  fromAddress: true,
-                                  googleMapController:
-                                      locationController.mapController,
-                                ));
-                          },
-                          initialCameraPosition: CameraPosition(
-                              target: _initialPosition, zoom: 17),
-                          zoomControlsEnabled: false,
-                          compassEnabled: true,
-                          indoorViewEnabled: true,
-                          myLocationEnabled: true,
-                          mapToolbarEnabled: false,
-                          onCameraIdle: () {
-                            locationController.updatePosition(
-                                _cameraPosition, true);
-                          },
-                          onCameraMove: ((position) =>
-                              _cameraPosition = position),
-                          onMapCreated: (GoogleMapController controller) {
-                            locationController.setMapController(controller);
-                          },
-                        )
-                      ],
+                    SizedBox(
+                        height: Dimension.height20 * 2.5,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                locationController.addressTypeList.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    left: Dimension.width20,
+                                    top: Dimension.height20),
+                                child: InkWell(
+                                    onTap: () {
+                                      locationController
+                                          .setAddressTypeIndex(index);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: Dimension.width20,
+                                          vertical: Dimension.height10),
+                                      margin: EdgeInsets.only(
+                                          right: Dimension.width10),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              Dimension.radius20 / 4),
+                                          color: Theme.of(context).cardColor,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.grey[200]!,
+                                                spreadRadius: 1,
+                                                blurRadius: 5)
+                                          ]),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            index == 0
+                                                ? Icons.home_filled
+                                                : index == 1
+                                                    ? Icons.work
+                                                    : Icons.location_on,
+                                            color: locationController
+                                                        .addressTypeIndex ==
+                                                    index
+                                                ? AppColors.mainColor
+                                                : Theme.of(context)
+                                                    .disabledColor,
+                                          )
+                                        ],
+                                      ),
+                                    )),
+                              );
+                            })),
+                    SizedBox(
+                      height: Dimension.height20,
                     ),
-                  ),
-                  SizedBox(
-                      height: Dimension.height20 * 2.5,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: locationController.addressTypeList.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                  left: Dimension.width20,
-                                  top: Dimension.height20),
-                              child: InkWell(
-                                  onTap: () {
-                                    locationController
-                                        .setAddressTypeIndex(index);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: Dimension.width20,
-                                        vertical: Dimension.height10),
-                                    margin: EdgeInsets.only(
-                                        right: Dimension.width10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            Dimension.radius20 / 4),
-                                        color: Theme.of(context).cardColor,
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.grey[200]!,
-                                              spreadRadius: 1,
-                                              blurRadius: 5)
-                                        ]),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          index == 0
-                                              ? Icons.home_filled
-                                              : index == 1
-                                                  ? Icons.work
-                                                  : Icons.location_on,
-                                          color: locationController
-                                                      .addressTypeIndex ==
-                                                  index
-                                              ? AppColors.mainColor
-                                              : Theme.of(context).disabledColor,
-                                        )
-                                      ],
-                                    ),
-                                  )),
-                            );
-                          })),
-                  SizedBox(
-                    height: Dimension.height20,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: Dimension.width20),
-                    child: BigText(
-                      text: "Delivery Info",
+                    Padding(
+                      padding: EdgeInsets.only(left: Dimension.width20),
+                      child: BigText(
+                        text: "Delivery Info",
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: Dimension.height20,
-                  ),
-                  AppTextField(
-                      textEditingController: _addressController,
-                      hintText: "Your Address",
-                      icon: Icons.map),
-                  SizedBox(
-                    height: Dimension.height20,
-                  ),
-                  AppTextField(
-                      textEditingController: _contactPersonName,
-                      hintText: "Your name",
-                      icon: Icons.person),
-                  SizedBox(
-                    height: Dimension.height20,
-                  ),
-                  AppTextField(
-                      textEditingController: _contactPersonNumber,
-                      hintText: "Your phone",
-                      icon: Icons.phone),
-                ],
-              ),
-            );
-          },
-        );
-      }),
+                    SizedBox(
+                      height: Dimension.height20,
+                    ),
+                    AppTextField(
+                        textEditingController: _addressController,
+                        hintText: "Your Address",
+                        icon: Icons.map),
+                    SizedBox(
+                      height: Dimension.height20,
+                    ),
+                    AppTextField(
+                        textEditingController: _contactPersonName,
+                        hintText: "Your name",
+                        icon: Icons.person),
+                    SizedBox(
+                      height: Dimension.height20,
+                    ),
+                    AppTextField(
+                        textEditingController: _contactPersonNumber,
+                        hintText: "Your phone",
+                        icon: Icons.phone),
+                  ],
+                ),
+              );
+            },
+          );
+        }),
+      ),
       bottomNavigationBar: GetBuilder<LocationController>(
         builder: (locationController) {
           return Column(
